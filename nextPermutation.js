@@ -4,44 +4,46 @@
  */
 function nextPerm(nums) {
   // find the first small number than the last num = pivot
+  // itterate from end to start to find the first reducing point (i)
 
-  let i = nums.length - 1;
-  while (nums[i] >= nums[nums.length - 1] && i > 0) {
+  //[1,2,3,5,4,(6),9,8,7]  --> i = 5, nums[j] ==6
+
+  let i = nums.length - 2;
+  while (nums[i] >= nums[i + 1]) {
     i--;
   }
-  pivot = nums[i];
-  pivotInd = i;
-  if (i === 0 && pivot > nums[nums.length - 1]) {
-    return nums.sort();
-  }
-  console.log(pivot);
 
-  // find the most closest large value to pivot = swap
-  let gap;
-  let swapInd = null;
-  for (let j = i; j < nums.length; j++) {
-    if (!gap) {
-      gap = nums[j + 1] - pivot;
-      swapInd = j;
-    } else {
-      if (gap > nums[j] - pivot) {
-        gap = nums[j] - pivot;
-        swapInd = j;
-      }
+  // then find the higher number than nums[i] iterating end
+  // asign the value to (j)
+
+  //[1,2,3,5,4,(6),9,8,(7)]  --> i = 5, nums[j] ==6   j =8 , nums[j] ==7
+
+  // then switch nums[i] and nums[j]   [1,2,3,5,4,(7),9,8,(6)]
+
+  if (i >= 0) {
+    let j = nums.length - 1;
+    while (nums[i] >= nums[j]) {
+      j--;
     }
+    [nums[i], nums[j]] = [nums[j], nums[i]];
   }
-  console.log(swapInd);
 
-  // swap the pivot and swap
-  nums[pivotInd] = nums[swapInd];
-  nums[swapInd] = pivot;
-  // reverse the string coming after pivots index
+  let left = i + 1;
+  let right = nums.length - 1;
 
-  //TODO
+  // then reverse the right section of nums from (i+1)  [1,2,3,5,4,7,{9,8,6}] -->[1, 2, 3, 5, 4, 7, 6, 8, 9]
+
+  while (left < right) {
+    [nums[left], nums[right]] = [nums[right], nums[left]];
+    left++;
+    right--;
+  }
 
   return nums;
 }
 
-nums = [5, 4, 1, 2, 3, 8, 7];
+nums = [1, 2, 3, 5, 4, 6, 9, 8, 7]; // [1, 2, 3, 5, 4, 7, 6, 8, 9]
+nums1 = [1, 2, 3];
+nums2 = [2, 3, 1];
 
-console.log(nextPerm(nums));
+console.log(nextPerm(nums2));
